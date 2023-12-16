@@ -45,7 +45,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
     
-        $message = $user->messages()->create([
+        $message = $user->messages->create([
             'message' => $request->message
         ]);
     
