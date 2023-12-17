@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-// use BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\SendMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
-use App\Models\User;
+
 use App\Events\SendMessage;
 
 class HomeController extends Controller
@@ -31,26 +30,23 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function chat()
-    {
+    public function chat(){
         return view('chat');
     }
 
-    public function messages()
-    {
+    public function messages(){
         return Message::with('user')->get();
     }
 
-    public function messageStore(Request $request)
-    {
+    public function messageStore(Request $request){
         $user = Auth::user();
-    
-        $message = $user->messages->create([
+
+        $messages = $user->messages()->create([
             'message' => $request->message
         ]);
-    
-        broadcast(new SendMessage($user, $message))->toOthers();
-    
+
+        broadcast(new SendMessage($user, $messages))->toOthers();
+
         return 'message sent';
     }
 }
